@@ -1,5 +1,6 @@
 # Variables with Data Types
 
+
 #1. Integer (int)
 x : int = 5
 print(x)  
