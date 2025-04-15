@@ -1,6 +1,6 @@
 #List
-#          0          1         2        3       4        -> left to right index
-#          -5        -4        -3        -2      -1       <- right to left index
+#          0          1         2        3       4       -> left to right index |  positive index
+#         -5        -4        -3        -2      -1       <- right to left index |  negative index 
 items = ["apple", "banana", "cherry", "mango", "grapes"]
 
 #getting all the items in the list
