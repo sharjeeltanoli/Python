@@ -44,22 +44,30 @@ def calculate_trade(entry, sl, risk, lev, direction, tp=None):
     reward = None
     rrr = None
     profit = None
+    profit_percent = None
 
     if tp and tp > 0:
         if direction == "long" and tp <= entry:
             raise ValueError("Take Profit must be above entry for a long trade.")
         if direction == "short" and tp >= entry:
             raise ValueError("Take Profit must be below entry for a short trade.")
+        
         reward = abs(tp - entry) * position_size
         rrr = reward / risk
         profit = reward
 
-    return position_size, required_margin, total_exposure, reward, rrr, profit
+        # Calculate profit % with leverage
+        if direction == "long":
+            profit_percent = ((tp - entry) / entry) * 100 * lev
+        else:  # short
+            profit_percent = ((entry - tp) / entry) * 100 * lev
+
+    return position_size, required_margin, total_exposure, reward, rrr, profit, profit_percent
 
 # --- Display Results ---
 if submitted:
     try:
-        size, margin, exposure, reward, rrr, profit = calculate_trade(
+        size, margin, exposure, reward, rrr, profit, profit_percent = calculate_trade(
             entry_price, stop_loss, risk_amount, leverage, direction, take_profit
         )
 
@@ -79,6 +87,7 @@ if submitted:
             - 📈 **Take Profit Price**: `{take_profit}`
             - 💰 **Potential Profit**: `${profit:.2f}`
             - 🧮 **Risk–Reward Ratio (RRR)**: `{rrr:.2f}`
+            - 📊 **Profit % with Leverage**: `{profit_percent:.2f}%`
             """)
 
     except Exception as e:
